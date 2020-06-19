@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="index.html">
-<link rel="next" href="literature.html">
+<link rel="next" href="sites.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -127,18 +127,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Indicateurs de la Biodiversité</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Fun-troduction</a></li>
-<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
-<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="3" data-path="sites.html"><a href="sites.html"><i class="fa fa-check"></i><b>3</b> Sites</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -162,7 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="intro" class="section level1">
 <h1><span class="header-section-number">2</span> Fun-troduction</h1>
-<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="intro.html#intro">2</a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="methods.html#methods">4</a>.</p>
+<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="intro.html#intro">2</a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="#methods"><strong>??</strong></a>.</p>
 <p>Figures and tables with captions will be placed in <code>figure</code> and <code>table</code> environments, respectively.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="intro.html#cb2-1"></a><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">.1</span>, <span class="fl">.1</span>))</span>
 <span id="cb2-2"><a href="intro.html#cb2-2"></a><span class="kw">plot</span>(pressure, <span class="dt">type =</span> <span class="st">&#39;b&#39;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
@@ -332,6 +326,80 @@ Figure 2.1: Here is a nice figure!
 </tbody>
 </table>
 <p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(Xie <a href="#ref-R-bookdown" role="doc-biblioref">2019</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(Xie <a href="#ref-xie2015" role="doc-biblioref">2015</a>)</span>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="intro.html#cb4-1"></a><span class="kw">library</span>(rcoleo)</span>
+<span id="cb4-2"><a href="intro.html#cb4-2"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.2.1.9000     ✓ purrr   0.3.4     
+## ✓ tibble  3.0.1          ✓ dplyr   1.0.0     
+## ✓ tidyr   1.0.0          ✓ stringr 1.4.0     
+## ✓ readr   1.3.1          ✓ forcats 0.4.0</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## ── Conflicts ────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="intro.html#cb11-1"></a><span class="kw">library</span>(lubridate)</span></code></pre></div>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro.html#cb15-1"></a><span class="co"># On retire les cellules (classe sf) depuis l&#39;API</span></span>
+<span id="cb15-2"><a href="intro.html#cb15-2"></a>cells &lt;-<span class="st"> </span>rcoleo<span class="op">::</span><span class="kw">sf_cells</span>()</span></code></pre></div>
+<pre><code>## Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
+## Please use `as_tibble()` instead.
+## The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1"></a>obs &lt;-<span class="st"> </span>rcoleo<span class="op">::</span><span class="kw">get_obs</span>()</span>
+<span id="cb17-2"><a href="intro.html#cb17-2"></a>sites_dl &lt;-<span class="st"> </span>rcoleo<span class="op">::</span><span class="kw">sf_sites</span>()</span>
+<span id="cb17-3"><a href="intro.html#cb17-3"></a></span>
+<span id="cb17-4"><a href="intro.html#cb17-4"></a><span class="co"># until there is a better way to obtain the data and parse the result (perhaps</span></span>
+<span id="cb17-5"><a href="intro.html#cb17-5"></a><span class="co"># in the form of a convenience function in rcoleo) we do this:</span></span>
+<span id="cb17-6"><a href="intro.html#cb17-6"></a></span>
+<span id="cb17-7"><a href="intro.html#cb17-7"></a>obs_df &lt;-<span class="st"> </span>obs[[<span class="dv">1</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">map</span>(<span class="st">&quot;body&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">map_df</span>(<span class="op">~</span><span class="st"> </span><span class="kw">select</span>(.x, <span class="op">-</span>closed_at))</span>
+<span id="cb17-8"><a href="intro.html#cb17-8"></a></span>
+<span id="cb17-9"><a href="intro.html#cb17-9"></a>all_obs &lt;-<span class="st"> </span>obs_df <span class="op">%&gt;%</span></span>
+<span id="cb17-10"><a href="intro.html#cb17-10"></a><span class="st">  </span><span class="kw">select</span>(cell_code, site_code, date_obs, type, </span>
+<span id="cb17-11"><a href="intro.html#cb17-11"></a>         <span class="dt">taxa =</span> obs_species.taxa_name, </span>
+<span id="cb17-12"><a href="intro.html#cb17-12"></a>         <span class="dt">var =</span> obs_species.variable, </span>
+<span id="cb17-13"><a href="intro.html#cb17-13"></a>         <span class="dt">val =</span> obs_species.value) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-14"><a href="intro.html#cb17-14"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date_obs =</span> lubridate<span class="op">::</span><span class="kw">ymd</span>(date_obs),</span>
+<span id="cb17-15"><a href="intro.html#cb17-15"></a>         <span class="co"># convert cover into pres/abs (right?)</span></span>
+<span id="cb17-16"><a href="intro.html#cb17-16"></a>         <span class="dt">count =</span> <span class="kw">if_else</span>(var <span class="op">==</span><span class="st"> &quot;recouvrement&quot;</span>, <span class="dv">1</span>, val))</span>
+<span id="cb17-17"><a href="intro.html#cb17-17"></a></span>
+<span id="cb17-18"><a href="intro.html#cb17-18"></a><span class="co"># CELLULES: On compte le nombre d&#39;observation/nombre espece par type, année et cellule</span></span>
+<span id="cb17-19"><a href="intro.html#cb17-19"></a>obs_cells &lt;-<span class="st"> </span>all_obs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-20"><a href="intro.html#cb17-20"></a><span class="st">  </span><span class="kw">group_by</span>(cell_code, date_obs, type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-21"><a href="intro.html#cb17-21"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">sum</span>(count)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-22"><a href="intro.html#cb17-22"></a><span class="st">  </span>ungroup</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;cell_code&#39;, &#39;date_obs&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1"></a>sp_cells &lt;-<span class="st">  </span>all_obs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-2"><a href="intro.html#cb19-2"></a><span class="st">  </span><span class="kw">select</span>(cell_code, date_obs, type, taxa) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-3"><a href="intro.html#cb19-3"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-4"><a href="intro.html#cb19-4"></a><span class="st">  </span><span class="kw">group_by</span>(cell_code, date_obs, type) <span class="op">%&gt;%</span></span>
+<span id="cb19-5"><a href="intro.html#cb19-5"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-6"><a href="intro.html#cb19-6"></a><span class="st">  </span>ungroup</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;cell_code&#39;, &#39;date_obs&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1"></a><span class="co"># CAMPAGNES</span></span>
+<span id="cb21-2"><a href="intro.html#cb21-2"></a>sites &lt;-<span class="st"> </span>sites_dl <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb21-3"><a href="intro.html#cb21-3"></a><span class="st">  </span><span class="kw">select</span>(site_code, off_station_code_id,</span>
+<span id="cb21-4"><a href="intro.html#cb21-4"></a>         <span class="dt">type_milieu =</span> type, geometry, <span class="dt">site_id =</span> id)</span>
+<span id="cb21-5"><a href="intro.html#cb21-5"></a></span>
+<span id="cb21-6"><a href="intro.html#cb21-6"></a><span class="co"># On prépare les jeux de données pour chacun des types de campagnes</span></span>
+<span id="cb21-7"><a href="intro.html#cb21-7"></a></span>
+<span id="cb21-8"><a href="intro.html#cb21-8"></a>all_obs_con &lt;-<span class="st">  </span>all_obs <span class="op">%&gt;%</span></span>
+<span id="cb21-9"><a href="intro.html#cb21-9"></a><span class="st">  </span><span class="kw">filter</span>(taxa <span class="op">!=</span><span class="st"> &quot;inconnu&quot;</span>)</span>
+<span id="cb21-10"><a href="intro.html#cb21-10"></a></span>
+<span id="cb21-11"><a href="intro.html#cb21-11"></a>microfaunes &lt;-<span class="st"> </span><span class="kw">subset</span>(all_obs_con, type <span class="op">==</span><span class="st"> &quot;insectes_sol&quot;</span>)</span>
+<span id="cb21-12"><a href="intro.html#cb21-12"></a></span>
+<span id="cb21-13"><a href="intro.html#cb21-13"></a>papillons &lt;-<span class="st"> </span><span class="kw">subset</span>(all_obs_con, type <span class="op">==</span><span class="st"> &quot;papilionidés&quot;</span>)</span>
+<span id="cb21-14"><a href="intro.html#cb21-14"></a></span>
+<span id="cb21-15"><a href="intro.html#cb21-15"></a>odonates &lt;-<span class="st"> </span><span class="kw">subset</span>(all_obs_con, type <span class="op">==</span><span class="st"> &quot;odonates&quot;</span>)</span>
+<span id="cb21-16"><a href="intro.html#cb21-16"></a></span>
+<span id="cb21-17"><a href="intro.html#cb21-17"></a>vegetation &lt;-<span class="st"> </span><span class="kw">subset</span>(all_obs_con, type <span class="op">==</span><span class="st"> &quot;végétation&quot;</span>)</span></code></pre></div>
 
 </div>
 <h3>References</h3>
@@ -349,7 +417,7 @@ Figure 2.1: Here is a nice figure!
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="literature.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sites.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

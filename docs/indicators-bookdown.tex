@@ -23,8 +23,8 @@
 }{}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={A Minimal Book Example},
-            pdfauthor={Yihui Xie},
+            pdftitle={Indicateurs de la Biodiversité},
+            pdfauthor={Andrew MacDonald},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -116,10 +116,10 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{A Minimal Book Example}
+  \title{Indicateurs de la Biodiversité}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-    \author{Yihui Xie}
+    \author{Andrew MacDonald}
     \preauthor{\centering\large\emph}
   \postauthor{\par}
       \predate{\centering\large\emph}
@@ -135,121 +135,94 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{prerequisites}{%
-\chapter{Prerequisites}\label{prerequisites}}
-
-This is a \emph{sample} book written in \textbf{Markdown}. You can use anything that Pandoc's Markdown supports, e.g., a math equation \(a^2 + b^2 = c^2\).
-
-The \textbf{bookdown} package can be installed from CRAN or Github:
+\hypertarget{dependencies}{%
+\chapter{Dependencies}\label{dependencies}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"bookdown"}\NormalTok{)}
-\CommentTok{# or the development version}
-\CommentTok{# devtools::install_github("rstudio/bookdown")}
+\KeywordTok{library}\NormalTok{(rcoleo)}
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(lubridate)}
 \end{Highlighting}
 \end{Shaded}
 
-Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading \texttt{\#}.
+\hypertarget{dl}{%
+\chapter{Download data}\label{dl}}
 
-To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.name/tinytex/}.
-
-\hypertarget{intro}{%
-\chapter{Fun-troduction}\label{intro}}
-
-You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
-
-Figures and tables with captions will be placed in \texttt{figure} and \texttt{table} environments, respectively.
+The only point here is to demonstrate the workflow for downloading data
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\FloatTok{.1}\NormalTok{, }\FloatTok{.1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(pressure, }\DataTypeTok{type =} \StringTok{'b'}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{19}\NormalTok{)}
+\CommentTok{# On retire les cellules (classe sf) depuis l'API}
+\NormalTok{cells <-}\StringTok{ }\NormalTok{rcoleo}\OperatorTok{::}\KeywordTok{sf_cells}\NormalTok{()}
+\NormalTok{obs <-}\StringTok{ }\NormalTok{rcoleo}\OperatorTok{::}\KeywordTok{get_obs}\NormalTok{()}
+\NormalTok{sites_dl <-}\StringTok{ }\NormalTok{rcoleo}\OperatorTok{::}\KeywordTok{sf_sites}\NormalTok{()}
+
+\CommentTok{# until there is a better way to obtain the data and parse the result (perhaps}
+\CommentTok{# in the form of a convenience function in rcoleo) we do this:}
+
+\NormalTok{obs_df <-}\StringTok{ }\NormalTok{obs[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{%>%}\StringTok{ }\KeywordTok{map}\NormalTok{(}\StringTok{"body"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{map_df}\NormalTok{(}\OperatorTok{~}\StringTok{ }\KeywordTok{select}\NormalTok{(.x, }\OperatorTok{-}\NormalTok{closed_at))}
+
+\NormalTok{all_obs <-}\StringTok{ }\NormalTok{obs_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(cell_code, site_code, date_obs, type, }
+         \DataTypeTok{taxa =}\NormalTok{ obs_species.taxa_name, }
+         \DataTypeTok{var =}\NormalTok{ obs_species.variable, }
+         \DataTypeTok{val =}\NormalTok{ obs_species.value) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{date_obs =}\NormalTok{ lubridate}\OperatorTok{::}\KeywordTok{ymd}\NormalTok{(date_obs),}
+         \CommentTok{# convert cover into pres/abs (right?)}
+         \DataTypeTok{count =} \KeywordTok{if_else}\NormalTok{(var }\OperatorTok{==}\StringTok{ "recouvrement"}\NormalTok{, }\DecValTok{1}\NormalTok{, val))}
+
+\CommentTok{# CELLULES: On compte le nombre d'observation/nombre espece par type, année et cellule}
+\NormalTok{obs_cells <-}\StringTok{ }\NormalTok{all_obs }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(cell_code, date_obs, type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{n =} \KeywordTok{sum}\NormalTok{(count)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{ungroup}
+
+\NormalTok{sp_cells <-}\StringTok{  }\NormalTok{all_obs }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(cell_code, date_obs, type, taxa) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{distinct}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(cell_code, date_obs, type) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{n =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{ungroup}
+
+\CommentTok{# CAMPAGNES}
+\NormalTok{sites <-}\StringTok{ }\NormalTok{sites_dl }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(site_code, off_station_code_id,}
+         \DataTypeTok{type_milieu =}\NormalTok{ type, geometry, }\DataTypeTok{site_id =}\NormalTok{ id)}
+
+\CommentTok{# On prépare les jeux de données pour chacun des types de campagnes}
+
+\NormalTok{all_obs_con <-}\StringTok{  }\NormalTok{all_obs }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(taxa }\OperatorTok{!=}\StringTok{ "inconnu"}\NormalTok{)}
+
+\NormalTok{microfaunes <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(all_obs_con, type }\OperatorTok{==}\StringTok{ "insectes_sol"}\NormalTok{)}
+
+\NormalTok{papillons <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(all_obs_con, type }\OperatorTok{==}\StringTok{ "papilionidés"}\NormalTok{)}
+
+\NormalTok{odonates <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(all_obs_con, type }\OperatorTok{==}\StringTok{ "odonates"}\NormalTok{)}
+
+\NormalTok{vegetation <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(all_obs_con, type }\OperatorTok{==}\StringTok{ "végétation"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
+\hypertarget{sites}{%
+\chapter{Sites}\label{sites}}
 
-{\centering \includegraphics[width=0.8\linewidth]{indicators-bookdown_files/figure-latex/nice-fig-1} 
-
-}
-
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
-
-Reference a figure by its code chunk label with the \texttt{fig:} prefix, e.g., see Figure \ref{fig:nice-fig}. Similarly, you can reference tables generated from \texttt{knitr::kable()}, e.g., see Table \ref{tab:nice-tab}.
+Summary data about the different sites
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
-  \KeywordTok{head}\NormalTok{(iris, }\DecValTok{20}\NormalTok{), }\DataTypeTok{caption =} \StringTok{'Here is a nice table!'}\NormalTok{,}
-  \DataTypeTok{booktabs =} \OtherTok{TRUE}
-\NormalTok{)}
+\NormalTok{obs_cells }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ cell_code, }\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{type, }\DataTypeTok{scales =} \StringTok{"free_y"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{table}
+\begin{verbatim}
+## Warning: Removed 1 rows containing missing values (geom_point).
+\end{verbatim}
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-5.1 & 3.5 & 1.4 & 0.2 & setosa\\
-4.9 & 3.0 & 1.4 & 0.2 & setosa\\
-4.7 & 3.2 & 1.3 & 0.2 & setosa\\
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
-5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-4.6 & 3.4 & 1.4 & 0.3 & setosa\\
-5.0 & 3.4 & 1.5 & 0.2 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.9 & 3.1 & 1.5 & 0.1 & setosa\\
-\addlinespace
-5.4 & 3.7 & 1.5 & 0.2 & setosa\\
-4.8 & 3.4 & 1.6 & 0.2 & setosa\\
-4.8 & 3.0 & 1.4 & 0.1 & setosa\\
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-5.8 & 4.0 & 1.2 & 0.2 & setosa\\
-\addlinespace
-5.7 & 4.4 & 1.5 & 0.4 & setosa\\
-5.4 & 3.9 & 1.3 & 0.4 & setosa\\
-5.1 & 3.5 & 1.4 & 0.3 & setosa\\
-5.7 & 3.8 & 1.7 & 0.3 & setosa\\
-5.1 & 3.8 & 1.5 & 0.3 & setosa\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
-
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
-
-Here is a review of existing methods.
-
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
-
-We describe our methods in this chapter.
-
-\hypertarget{applications}{%
-\chapter{Applications}\label{applications}}
-
-Some \emph{significant} applications are demonstrated in this chapter.
-
-\hypertarget{example-one}{%
-\section{Example one}\label{example-one}}
-
-\hypertarget{example-two}{%
-\section{Example two}\label{example-two}}
-
-\hypertarget{final-words}{%
-\chapter{Final Words}\label{final-words}}
-
-We have finished a nice book.
+\includegraphics{indicators-bookdown_files/figure-latex/site_plot-1.pdf}
 
 \bibliography{book.bib,packages.bib}
 

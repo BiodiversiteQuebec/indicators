@@ -1,0 +1,10 @@
+# Sites
+
+Summary data about the different sites
+
+```{r site_plot}
+obs_cells %>% 
+  ggplot(aes(x = cell_code, y = n)) + geom_point() + 
+  facet_wrap(~type, scales = "free_y")
+```
+
