@@ -24,7 +24,7 @@
 <meta name="author" content="Andrew MacDonald" />
 
 
-<meta name="date" content="2020-06-22" />
+<meta name="date" content="2020-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="dl.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="odonate-communities.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -135,8 +135,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Dependencies</a></li>
-<li class="chapter" data-level="2" data-path="dl.html"><a href="dl.html"><i class="fa fa-check"></i><b>2</b> Download data</a></li>
+<li class="chapter" data-level="2" data-path="dl.html"><a href="dl.html"><i class="fa fa-check"></i><b>2</b> Download data</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="dl.html"><a href="dl.html#overall-summary"><i class="fa fa-check"></i><b>2.0.1</b> overall summary</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="sites.html"><a href="sites.html"><i class="fa fa-check"></i><b>3</b> Sites</a></li>
+<li class="chapter" data-level="4" data-path="odonate-communities.html"><a href="odonate-communities.html"><i class="fa fa-check"></i><b>4</b> Odonate communities</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="odonate-communities.html"><a href="odonate-communities.html#questions"><i class="fa fa-check"></i><b>4.1</b> Questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="soil-invertebrates.html"><a href="soil-invertebrates.html"><i class="fa fa-check"></i><b>5</b> Soil invertebrates</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="soil-invertebrates.html"><a href="soil-invertebrates.html#questions-1"><i class="fa fa-check"></i><b>5.1</b> Questions</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -161,9 +172,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="sites" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Sites</h1>
 <p>Summary data about the different sites</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="sites.html#cb3-1"></a>obs_cells <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-2"><a href="sites.html#cb3-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> cell_code, <span class="dt">y =</span> n)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb3-3"><a href="sites.html#cb3-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>type, <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="sites.html#cb6-1"></a>obs_cells <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-2"><a href="sites.html#cb6-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> cell_code, <span class="dt">y =</span> n)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb6-3"><a href="sites.html#cb6-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>type, <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="indicators-bookdown_files/figure-html/site_plot-1.png" width="672" /></p>
 
@@ -174,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="dl.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="odonate-communities.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

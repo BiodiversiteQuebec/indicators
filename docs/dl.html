@@ -24,7 +24,7 @@
 <meta name="author" content="Andrew MacDonald" />
 
 
-<meta name="date" content="2020-06-22" />
+<meta name="date" content="2020-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,8 +135,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Dependencies</a></li>
-<li class="chapter" data-level="2" data-path="dl.html"><a href="dl.html"><i class="fa fa-check"></i><b>2</b> Download data</a></li>
+<li class="chapter" data-level="2" data-path="dl.html"><a href="dl.html"><i class="fa fa-check"></i><b>2</b> Download data</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="dl.html"><a href="dl.html#overall-summary"><i class="fa fa-check"></i><b>2.0.1</b> overall summary</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="sites.html"><a href="sites.html"><i class="fa fa-check"></i><b>3</b> Sites</a></li>
+<li class="chapter" data-level="4" data-path="odonate-communities.html"><a href="odonate-communities.html"><i class="fa fa-check"></i><b>4</b> Odonate communities</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="odonate-communities.html"><a href="odonate-communities.html#questions"><i class="fa fa-check"></i><b>4.1</b> Questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="soil-invertebrates.html"><a href="soil-invertebrates.html"><i class="fa fa-check"></i><b>5</b> Soil invertebrates</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="soil-invertebrates.html"><a href="soil-invertebrates.html#questions-1"><i class="fa fa-check"></i><b>5.1</b> Questions</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -210,7 +221,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-47"><a href="dl.html#cb2-47"></a>odonates &lt;-<span class="st"> </span><span class="kw">subset</span>(all_obs_con, type <span class="op">==</span><span class="st"> &quot;odonates&quot;</span>)</span>
 <span id="cb2-48"><a href="dl.html#cb2-48"></a></span>
 <span id="cb2-49"><a href="dl.html#cb2-49"></a>vegetation &lt;-<span class="st"> </span><span class="kw">subset</span>(all_obs_con, type <span class="op">==</span><span class="st"> &quot;végétation&quot;</span>)</span></code></pre></div>
+<div id="overall-summary" class="section level3" number="2.0.1">
+<h3><span class="header-section-number">2.0.1</span> overall summary</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="dl.html#cb3-1"></a>all_obs_con <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-2"><a href="dl.html#cb3-2"></a><span class="st">  </span><span class="kw">group_by</span>(type) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-3"><a href="dl.html#cb3-3"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sites =</span> <span class="kw">n_distinct</span>(site_code),</span>
+<span id="cb3-4"><a href="dl.html#cb3-4"></a>            <span class="dt">cells =</span> <span class="kw">n_distinct</span>(cell_code),</span>
+<span id="cb3-5"><a href="dl.html#cb3-5"></a>            <span class="dt">taxa =</span> <span class="kw">n_distinct</span>(taxa))</span></code></pre></div>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 4 x 4
+##   type         sites cells  taxa
+##   &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1 insectes_sol    13    13    37
+## 2 odonates        12    10    35
+## 3 papilionidés    14    11    26
+## 4 végétation      26    11   170</code></pre>
 
+</div>
 </div>
             </section>
 

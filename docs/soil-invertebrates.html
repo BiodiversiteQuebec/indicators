@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Indicateurs de la Biodiversité</title>
+  <title>5 Soil invertebrates | Indicateurs de la Biodiversité</title>
   <meta name="description" content="Indicators in progress." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Indicateurs de la Biodiversité" />
+  <meta property="og:title" content="5 Soil invertebrates | Indicateurs de la Biodiversité" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Indicateurs de la Biodiversité" />
+  <meta name="twitter:title" content="5 Soil invertebrates | Indicateurs de la Biodiversité" />
   
   <meta name="twitter:description" content="Indicators in progress." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="soil-invertebrates.html"/>
-
+<link rel="prev" href="odonate-communities.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -169,17 +169,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered" number="">
-<h1>References</h1>
+<div id="soil-invertebrates" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Soil invertebrates</h1>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="soil-invertebrates.html#cb20-1"></a><span class="co"># confirm that the only variable recorded here is &quot;abondance&quot;</span></span>
+<span id="cb20-2"><a href="soil-invertebrates.html#cb20-2"></a>microfaunes<span class="op">$</span>var <span class="op">%&gt;%</span><span class="st"> </span>unique <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw">stopifnot</span>(. <span class="op">==</span><span class="st"> &quot;abondance&quot;</span>)}</span>
+<span id="cb20-3"><a href="soil-invertebrates.html#cb20-3"></a></span>
+<span id="cb20-4"><a href="soil-invertebrates.html#cb20-4"></a></span>
+<span id="cb20-5"><a href="soil-invertebrates.html#cb20-5"></a><span class="co">## are sites nested in cells? </span></span>
+<span id="cb20-6"><a href="soil-invertebrates.html#cb20-6"></a></span>
+<span id="cb20-7"><a href="soil-invertebrates.html#cb20-7"></a>microfaunes <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb20-8"><a href="soil-invertebrates.html#cb20-8"></a><span class="st">  </span><span class="kw">select</span>(site_code, cell_code) <span class="op">%&gt;%</span><span class="st"> </span>distinct <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb20-9"><a href="soil-invertebrates.html#cb20-9"></a><span class="st">  </span><span class="kw">group_by</span>(cell_code) <span class="op">%&gt;%</span><span class="st"> </span>tally</span></code></pre></div>
+<pre><code>## # A tibble: 13 x 2
+##    cell_code     n
+##    &lt;chr&gt;     &lt;int&gt;
+##  1 132_116       1
+##  2 135_104       1
+##  3 136_116       1
+##  4 137_107       1
+##  5 137_111       1
+##  6 139_103       1
+##  7 139_111       1
+##  8 141_108       1
+##  9 142_111       1
+## 10 145_102       1
+## 11 148_101       1
+## 12 48_181        1
+## 13 80_175        1</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="soil-invertebrates.html#cb22-1"></a><span class="co"># no, here we have one survey per cell</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="soil-invertebrates.html#cb23-1"></a>rank_abundance &lt;-<span class="st"> </span>microfaunes <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-2"><a href="soil-invertebrates.html#cb23-2"></a><span class="st">  </span><span class="kw">filter</span>(val<span class="op">&gt;</span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-3"><a href="soil-invertebrates.html#cb23-3"></a><span class="st">  </span><span class="kw">left_join</span>(<span class="kw">select</span>(cells, cell_code, name)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-4"><a href="soil-invertebrates.html#cb23-4"></a><span class="st">  </span><span class="kw">group_by</span>(cell_code, name, site_code) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-5"><a href="soil-invertebrates.html#cb23-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank =</span> <span class="kw">row_number</span>(<span class="kw">desc</span>(count)))</span></code></pre></div>
+<pre><code>## Joining, by = &quot;cell_code&quot;</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="soil-invertebrates.html#cb25-1"></a>rank_abundance <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb25-2"><a href="soil-invertebrates.html#cb25-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> count, <span class="dt">group =</span> site_code)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb25-3"><a href="soil-invertebrates.html#cb25-3"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb25-4"><a href="soil-invertebrates.html#cb25-4"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb25-5"><a href="soil-invertebrates.html#cb25-5"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb25-6"><a href="soil-invertebrates.html#cb25-6"></a><span class="st">  </span><span class="kw">coord_trans</span>(<span class="dt">y =</span> <span class="st">&quot;log&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb25-7"><a href="soil-invertebrates.html#cb25-7"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span></code></pre></div>
+<p><img src="indicators-bookdown_files/figure-html/fig_rank_abd_insects_sol-1.png" width="672" /></p>
+<div id="questions-1" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Questions</h2>
+<p>Why are some site names NA? do those sites not have names?</p>
+<p>Should 0 values be uploaded into Coleo?</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="soil-invertebrates.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="odonate-communities.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

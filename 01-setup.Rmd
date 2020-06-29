@@ -3,7 +3,7 @@
 The only point here is to demonstrate the workflow for downloading data
 
 
-```{r Retrait-des-donnees, warning=FALSE, message=FALSE}
+```{r Retrait-des-donnees, warning=FALSE, message=FALSE, cache=TRUE}
 
 # On retire les cellules (classe sf) depuis l'API
 cells <- rcoleo::sf_cells()
@@ -54,5 +54,15 @@ papillons <- subset(all_obs_con, type == "papilionidés")
 odonates <- subset(all_obs_con, type == "odonates")
 
 vegetation <- subset(all_obs_con, type == "végétation")
+```
+
+### overall summary
+
+```{r overall_summary}
+all_obs_con %>% 
+  group_by(type) %>% 
+  summarize(sites = n_distinct(site_code),
+            cells = n_distinct(cell_code),
+            taxa = n_distinct(taxa))
 ```
 

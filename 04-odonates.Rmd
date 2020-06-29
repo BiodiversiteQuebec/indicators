@@ -1,0 +1,52 @@
+# Odonate communities
+
+
+```{r setup_odonate}
+# confirm that the only variable recorded here is "abondance"
+odonates$var %>% unique %>% {stopifnot(. == "abondance")}
+
+odonates %>% 
+  glimpse %>% 
+  {all.equal(.$count, .$val)}
+
+
+## are sites nested in cells? 
+
+odonates %>% 
+  select(site_code, cell_code) %>% distinct %>% 
+  group_by(cell_code) %>% tally
+# yes, sometimes there are sites within cells!
+```
+
+```{r make_rank_abundance_odon}
+
+rank_abundance <- odonates %>% 
+  left_join(select(cells, cell_code, name)) %>% 
+  group_by(cell_code, name, site_code, taxa) %>% 
+  summarize(total = sum(count)) %>% 
+  mutate(rank = row_number(desc(total)))
+```
+
+```{r fig_rank_abd_odonate}
+rank_abundance %>% 
+  ggplot(aes(x = rank, y = total, group = site_code)) + 
+  geom_point() + 
+  geom_line() + 
+  facet_wrap(~name) + 
+  coord_trans(y = "log") + 
+  theme_bw()
+
+```
+
+
+## Questions
+
+Some sites appear to count **individuals**, not species? why is that? 
+
+```{r odonate-table}
+odonates %>% 
+  left_join(select(cells, cell_code, name)) %>% 
+  filter(name %>% stringr::str_detect("Parc|-de-")) %>% 
+  select(name, site_code, taxa, val) %>% knitr::kable(.)
+```
+

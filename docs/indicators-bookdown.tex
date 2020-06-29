@@ -113,7 +113,7 @@
 
 \title{Indicateurs de la Biodiversité}
 \author{Andrew MacDonald}
-\date{2020-06-22}
+\date{2020-06-29}
 
 \begin{document}
 \maketitle
@@ -192,6 +192,33 @@ The only point here is to demonstrate the workflow for downloading data
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{overall-summary}{%
+\subsection{overall summary}\label{overall-summary}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{all\_obs\_con }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(type) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{sites =} \KeywordTok{n\_distinct}\NormalTok{(site\_code),}
+            \DataTypeTok{cells =} \KeywordTok{n\_distinct}\NormalTok{(cell\_code),}
+            \DataTypeTok{taxa =} \KeywordTok{n\_distinct}\NormalTok{(taxa))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` ungrouping output (override with `.groups` argument)
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 4 x 4
+##   type         sites cells  taxa
+##   <chr>        <int> <int> <int>
+## 1 insectes_sol    13    13    37
+## 2 odonates        12    10    35
+## 3 papilionidés    14    11    26
+## 4 végétation      26    11   170
+\end{verbatim}
+
 \hypertarget{sites}{%
 \chapter{Sites}\label{sites}}
 
@@ -210,6 +237,292 @@ Summary data about the different sites
 \end{verbatim}
 
 \includegraphics{indicators-bookdown_files/figure-latex/site_plot-1.pdf}
+
+\hypertarget{odonate-communities}{%
+\chapter{Odonate communities}\label{odonate-communities}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# confirm that the only variable recorded here is "abondance"}
+\NormalTok{odonates}\OperatorTok{$}\NormalTok{var }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{unique }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{\{}\KeywordTok{stopifnot}\NormalTok{(. }\OperatorTok{==}\StringTok{ "abondance"}\NormalTok{)\}}
+
+\NormalTok{odonates }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\NormalTok{glimpse }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\NormalTok{\{}\KeywordTok{all.equal}\NormalTok{(.}\OperatorTok{$}\NormalTok{count, .}\OperatorTok{$}\NormalTok{val)\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 151
+## Columns: 8
+## $ cell_code <chr> "135_104", "135_104", "135_104", "135_104", "135_104", "1...
+## $ site_code <chr> "135_104_H01", "135_104_H01", "135_104_H01", "135_104_H01...
+## $ date_obs  <date> 2016-06-23, 2016-06-23, 2016-06-23, 2016-06-23, 2016-06-...
+## $ type      <chr> "odonates", "odonates", "odonates", "odonates", "odonates...
+## $ taxa      <chr> "Leucorrhinia hudsonica", "Nehalennia gracilis", "Gomphus...
+## $ var       <chr> "abondance", "abondance", "abondance", "abondance", "abon...
+## $ val       <dbl> 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 4, 1, 10, 1, 30, 5, 20, ...
+## $ count     <dbl> 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 4, 1, 10, 1, 30, 5, 20, ...
+\end{verbatim}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# are sites nested in cells? }
+
+\NormalTok{odonates }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(site\_code, cell\_code) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{distinct }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(cell\_code) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{tally}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 10 x 2
+##    cell_code     n
+##    <chr>     <int>
+##  1 132_116       1
+##  2 135_104       1
+##  3 137_107       1
+##  4 137_111       1
+##  5 139_103       1
+##  6 139_111       1
+##  7 141_108       1
+##  8 142_111       2
+##  9 145_102       2
+## 10 148_101       1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# yes, sometimes there are sites within cells!}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rank\_abundance \textless{}{-}}\StringTok{ }\NormalTok{odonates }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{left\_join}\NormalTok{(}\KeywordTok{select}\NormalTok{(cells, cell\_code, name)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(cell\_code, name, site\_code, taxa) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{total =} \KeywordTok{sum}\NormalTok{(count)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{rank =} \KeywordTok{row\_number}\NormalTok{(}\KeywordTok{desc}\NormalTok{(total)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "cell_code"
+\end{verbatim}
+
+\begin{verbatim}
+## `summarise()` regrouping output by 'cell_code', 'name', 'site_code' (override with `.groups` argument)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rank\_abundance }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ rank, }\DataTypeTok{y =}\NormalTok{ total, }\DataTypeTok{group =}\NormalTok{ site\_code)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{name) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{coord\_trans}\NormalTok{(}\DataTypeTok{y =} \StringTok{"log"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme\_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{indicators-bookdown_files/figure-latex/fig_rank_abd_odonate-1.pdf}
+
+\hypertarget{questions}{%
+\section{Questions}\label{questions}}
+
+Some sites appear to count \textbf{individuals}, not species? why is that?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{odonates }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{left\_join}\NormalTok{(}\KeywordTok{select}\NormalTok{(cells, cell\_code, name)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(name }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str\_detect}\NormalTok{(}\StringTok{"Parc|{-}de{-}"}\NormalTok{)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(name, site\_code, taxa, val) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(.)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "cell_code"
+\end{verbatim}
+
+\begin{tabular}{l|l|l|r}
+\hline
+name & site\_code & taxa & val\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Leucorrhinia glacialis & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Enallagma ebrium & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Nehalennia irene & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Leucorrhinia proxima & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Dorocordulia libera & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Enallagma ebrium & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Somatochlora franklini & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Enallagma ebrium & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Ladona julia & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Enallagma ebrium & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Leucorrhinia proxima & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Leucorrhinia proxima & 1\\
+\hline
+La Côte-de-Beaupré & 139\_111\_H01 & Nehalennia irene & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nehalennia gracilis & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Leucorrhinia proxima & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nannothemis bella & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nannothemis bella & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nehalennia gracilis & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nannothemis bella & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nehalennia irene & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nehalennia irene & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nehalennia gracilis & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Enallagma boreale & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Leucorrhinia patricia & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Nehalennia irene & 1\\
+\hline
+Parc Frontenac & 145\_102\_H01 & Leucorrhinia glacialis & 1\\
+\hline
+Parc Frontenac & 145\_102\_H02 & Nehalennia irene & 1\\
+\hline
+Parc Frontenac & 145\_102\_H02 & Celithemis elisa & 1\\
+\hline
+Parc Frontenac & 145\_102\_H02 & Nehalennia irene & 1\\
+\hline
+Parc Frontenac & 145\_102\_H02 & Leucorrhinia proxima & 1\\
+\hline
+Parc Frontenac & 145\_102\_H02 & Ischnura posita & 1\\
+\hline
+Parc Frontenac & 145\_102\_H02 & Enallagma ebrium & 1\\
+\hline
+\end{tabular}
+
+\hypertarget{soil-invertebrates}{%
+\chapter{Soil invertebrates}\label{soil-invertebrates}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# confirm that the only variable recorded here is "abondance"}
+\NormalTok{microfaunes}\OperatorTok{$}\NormalTok{var }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{unique }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{\{}\KeywordTok{stopifnot}\NormalTok{(. }\OperatorTok{==}\StringTok{ "abondance"}\NormalTok{)\}}
+
+
+\CommentTok{\#\# are sites nested in cells? }
+
+\NormalTok{microfaunes }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(site\_code, cell\_code) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{distinct }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(cell\_code) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{tally}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 13 x 2
+##    cell_code     n
+##    <chr>     <int>
+##  1 132_116       1
+##  2 135_104       1
+##  3 136_116       1
+##  4 137_107       1
+##  5 137_111       1
+##  6 139_103       1
+##  7 139_111       1
+##  8 141_108       1
+##  9 142_111       1
+## 10 145_102       1
+## 11 148_101       1
+## 12 48_181        1
+## 13 80_175        1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# no, here we have one survey per cell}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rank\_abundance \textless{}{-}}\StringTok{ }\NormalTok{microfaunes }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(val}\OperatorTok{\textgreater{}}\DecValTok{0}\NormalTok{) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{left\_join}\NormalTok{(}\KeywordTok{select}\NormalTok{(cells, cell\_code, name)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(cell\_code, name, site\_code) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{rank =} \KeywordTok{row\_number}\NormalTok{(}\KeywordTok{desc}\NormalTok{(count)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "cell_code"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rank\_abundance }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ rank, }\DataTypeTok{y =}\NormalTok{ count, }\DataTypeTok{group =}\NormalTok{ site\_code)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{name) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{coord\_trans}\NormalTok{(}\DataTypeTok{y =} \StringTok{"log"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme\_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{indicators-bookdown_files/figure-latex/fig_rank_abd_insects_sol-1.pdf}
+
+\hypertarget{questions-1}{%
+\section{Questions}\label{questions-1}}
+
+Why are some site names NA? do those sites not have names?
+
+Should 0 values be uploaded into Coleo?
 
   \bibliography{book.bib,packages.bib}
 

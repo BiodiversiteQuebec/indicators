@@ -1,0 +1,40 @@
+# Soil invertebrates
+
+
+```{r setup_insect_sol}
+# confirm that the only variable recorded here is "abondance"
+microfaunes$var %>% unique %>% {stopifnot(. == "abondance")}
+
+
+## are sites nested in cells? 
+
+microfaunes %>% 
+  select(site_code, cell_code) %>% distinct %>% 
+  group_by(cell_code) %>% tally
+# no, here we have one survey per cell
+```
+
+```{r make_rank_abundance_insect_sol}
+
+rank_abundance <- microfaunes %>% 
+  filter(val>0) %>% 
+  left_join(select(cells, cell_code, name)) %>% 
+  group_by(cell_code, name, site_code) %>% 
+  mutate(rank = row_number(desc(count)))
+```
+
+```{r fig_rank_abd_insects_sol}
+rank_abundance %>% 
+  ggplot(aes(x = rank, y = count, group = site_code)) + 
+  geom_point() + 
+  geom_line() + 
+  facet_wrap(~name) + 
+  coord_trans(y = "log") + 
+  theme_bw()
+```
+
+## Questions
+
+Why are some site names NA? do those sites not have names? 
+
+Should 0 values be uploaded into Coleo?
