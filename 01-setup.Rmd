@@ -66,3 +66,15 @@ all_obs_con %>%
             taxa = n_distinct(taxa))
 ```
 
+
+## List of Indicators
+
+* Vitesse de décomposition de la matière organique
+* Composition des communautés d’Odonates
+* Phénologie végétale
+* Phénologie acoustique des communautés, d’anoures et d’orthoptères
+* Composition communauté d’insectes du sol
+* Composition des communautés de poissons
+* Présence de certains méso carnivores et grands mammifères
+* Composition macroinvertébrés benthiques d’eau douce
+* Composition des communautés des orthoptères

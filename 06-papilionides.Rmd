@@ -1,0 +1,41 @@
+# Soil invertebrates
+
+
+```{r setup_pap}
+# confirm that the only variable recorded here is "abondance"
+papillons$var %>% unique %>% {stopifnot(. == "abondance")}
+
+
+## are sites nested in cells? 
+
+papillons %>% 
+  select(site_code, cell_code) %>% distinct %>% 
+  group_by(cell_code) %>% tally
+# yes, cells in sites 
+```
+
+```{r make_rank_abundance_pap}
+
+rank_abundance <- papillons %>% 
+  filter(val>0) %>% 
+  left_join(select(cells, cell_code, name)) %>% 
+  group_by(cell_code, name, site_code, taxa) %>%  
+  summarize(total = sum(count)) %>% 
+  mutate(rank = row_number(desc(total)))
+```
+
+```{r fig_rank_abd_pap}
+rank_abundance %>% 
+  ggplot(aes(x = rank, y = total, group = site_code)) + 
+  geom_point() + 
+  geom_line() + 
+  facet_wrap(~name) + 
+  coord_trans(y = "log") + 
+  theme_bw()
+```
+
+## Questions
+
+Why are some site names NA? do those sites not have names? 
+
+Should 0 values be uploaded into Coleo?
