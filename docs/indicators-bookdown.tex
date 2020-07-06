@@ -113,7 +113,7 @@
 
 \title{Indicateurs de la Biodiversité}
 \author{Andrew MacDonald}
-\date{2020-06-29}
+\date{2020-07-06}
 
 \begin{document}
 \maketitle
@@ -549,8 +549,8 @@ Why are some site names NA? do those sites not have names?
 
 Should 0 values be uploaded into Coleo?
 
-\hypertarget{soil-invertebrates-1}{%
-\chapter{Soil invertebrates}\label{soil-invertebrates-1}}
+\hypertarget{lepidoptera}{%
+\chapter{Lepidoptera}\label{lepidoptera}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -635,6 +635,151 @@ Should 0 values be uploaded into Coleo?
 Why are some site names NA? do those sites not have names?
 
 Should 0 values be uploaded into Coleo?
+
+\hypertarget{histoires-de-la-biodiversite}{%
+\chapter{Histoires de la biodiversite}\label{histoires-de-la-biodiversite}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Changement de phénologie dans le temps
+\item
+  Quelle partie de la biodiversité on connaît (sampling/rarefaction)
+\item
+  Changements de richesse au cours du temps
+\item
+  Emplacement des communautés les plus originales / uniques
+\item
+  Hotspots de biodiversité par taxa
+\item
+  Portrait de différents biomes avec des espèces emblématiques
+\item
+  Réseaux?
+\item
+  Distribution de l'âge phylogénétique des espèces
+\item
+  Distribution de l'année de première observation des espèces
+\item
+  Potentiel de human-wildlife conflict
+\end{enumerate}
+
+\hypertarget{sampling-rarefaction}{%
+\section{Sampling / rarefaction}\label{sampling-rarefaction}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(iNEXT)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{site\_spp \textless{}{-}}\StringTok{ }\NormalTok{papillons }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(site\_code, taxa, count) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(site\_code, taxa) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{value =} \KeywordTok{sum}\NormalTok{(count)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{ungroup }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{pivot\_wider}\NormalTok{(}\DataTypeTok{id\_cols =} \StringTok{"taxa"}\NormalTok{, }\DataTypeTok{names\_from =} \StringTok{"site\_code"}\NormalTok{, }\DataTypeTok{values\_fill =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` regrouping output by 'site_code' (override with `.groups` argument)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pap\_list \textless{}{-}}\StringTok{ }\KeywordTok{as.list}\NormalTok{(site\_spp[}\OperatorTok{{-}}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{out \textless{}{-}}\StringTok{ }\KeywordTok{iNEXT}\NormalTok{(pap\_list, }\DataTypeTok{q=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{), }\DataTypeTok{datatype=}\StringTok{"abundance"}\NormalTok{, }\DataTypeTok{endpoint=}\DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggiNEXT}\NormalTok{(out, }\DataTypeTok{type=}\DecValTok{1}\NormalTok{, }\DataTypeTok{facet.var=}\StringTok{"order"}\NormalTok{, }\DataTypeTok{color.var=}\StringTok{"site"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: The shape palette can deal with a maximum of 6 discrete values because
+## more than 6 becomes difficult to discriminate; you have 14. Consider
+## specifying shapes manually if you must have them.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 24 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{indicators-bookdown_files/figure-latex/order_plot-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggiNEXT}\NormalTok{(out, }\DataTypeTok{type=}\DecValTok{1}\NormalTok{, }\DataTypeTok{facet.var=}\StringTok{"site"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{site) }\OperatorTok{+}\StringTok{ }\KeywordTok{coord\_cartesian}\NormalTok{(}\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{5}\NormalTok{,}\DecValTok{20}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 1 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{indicators-bookdown_files/figure-latex/indiv_raref-1.pdf}
+
+How many per site?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{map\_dbl}\NormalTok{(pap\_list, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 132_116_H01 135_104_H01 136_116_H01 137_107_H01 137_107_H02 137_111_H01 
+##           3           3           9           8           7           3 
+## 139_103_H01 139_111_H01 141_108_H01 142_111_H01 142_111_H02 145_102_H01 
+##           7           3           2          18          10          32 
+## 145_102_H02 148_101_H01 
+##           2           7
+\end{verbatim}
 
   \bibliography{book.bib,packages.bib}
 

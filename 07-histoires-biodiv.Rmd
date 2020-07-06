@@ -1,0 +1,52 @@
+# Histoires de la biodiversite
+
+
+1. Changement de phénologie dans le temps
+2. Quelle partie de la biodiversité on connaît (sampling/rarefaction)
+3. Changements de richesse au cours du temps
+4. Emplacement des communautés les plus originales / uniques
+5. Hotspots de biodiversité par taxa
+6. Portrait de différents biomes avec des espèces emblématiques
+7. Réseaux?
+8. Distribution de l'âge phylogénétique des espèces
+9. Distribution de l'année de première observation des espèces
+10. Potentiel de human-wildlife conflict
+
+
+## Sampling / rarefaction
+
+```{r}
+library(iNEXT)
+```
+
+
+```{r setup_pap_rarefact, cache=TRUE}
+site_spp <- papillons %>% 
+  select(site_code, taxa, count) %>% 
+  group_by(site_code, taxa) %>% 
+  summarize(value = sum(count)) %>% ungroup %>% 
+  pivot_wider(id_cols = "taxa", names_from = "site_code", values_fill = 0)
+
+pap_list <- as.list(site_spp[-1])
+
+```
+
+
+```{r, order_plot}
+out <- iNEXT(pap_list, q=c(0, 1, 2), datatype="abundance", endpoint=50)
+
+ggiNEXT(out, type=1, facet.var="order", color.var="site")
+
+```
+
+```{r, indiv_raref, fig.height=9}
+ggiNEXT(out, type=1, facet.var="site") + 
+  facet_wrap(~site) + coord_cartesian(ylim = c(-5,20))
+```
+
+
+How many per site? 
+```{r}
+map_dbl(pap_list, sum)
+```
+

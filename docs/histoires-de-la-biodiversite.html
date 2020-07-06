@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Sites | Indicateurs de la Biodiversité</title>
+  <title>7 Histoires de la biodiversite | Indicateurs de la Biodiversité</title>
   <meta name="description" content="Indicators in progress." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Sites | Indicateurs de la Biodiversité" />
+  <meta property="og:title" content="7 Histoires de la biodiversite | Indicateurs de la Biodiversité" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Sites | Indicateurs de la Biodiversité" />
+  <meta name="twitter:title" content="7 Histoires de la biodiversite | Indicateurs de la Biodiversité" />
   
   <meta name="twitter:description" content="Indicators in progress." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="dl.html"/>
-<link rel="next" href="odonate-communities.html"/>
+<link rel="prev" href="lepidoptera.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -178,23 +178,87 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sites" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Sites</h1>
-<p>Summary data about the different sites</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="sites.html#cb6-1"></a>obs_cells <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-2"><a href="sites.html#cb6-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> cell_code, <span class="dt">y =</span> n)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-3"><a href="sites.html#cb6-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>type, <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="indicators-bookdown_files/figure-html/site_plot-1.png" width="672" /></p>
+<div id="histoires-de-la-biodiversite" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Histoires de la biodiversite</h1>
+<ol style="list-style-type: decimal">
+<li>Changement de phénologie dans le temps</li>
+<li>Quelle partie de la biodiversité on connaît (sampling/rarefaction)</li>
+<li>Changements de richesse au cours du temps</li>
+<li>Emplacement des communautés les plus originales / uniques</li>
+<li>Hotspots de biodiversité par taxa</li>
+<li>Portrait de différents biomes avec des espèces emblématiques</li>
+<li>Réseaux?</li>
+<li>Distribution de l’âge phylogénétique des espèces</li>
+<li>Distribution de l’année de première observation des espèces</li>
+<li>Potentiel de human-wildlife conflict</li>
+</ol>
+<div id="sampling-rarefaction" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Sampling / rarefaction</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="histoires-de-la-biodiversite.html#cb34-1"></a><span class="kw">library</span>(iNEXT)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="histoires-de-la-biodiversite.html#cb35-1"></a>site_spp &lt;-<span class="st"> </span>papillons <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-2"><a href="histoires-de-la-biodiversite.html#cb35-2"></a><span class="st">  </span><span class="kw">select</span>(site_code, taxa, count) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-3"><a href="histoires-de-la-biodiversite.html#cb35-3"></a><span class="st">  </span><span class="kw">group_by</span>(site_code, taxa) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-4"><a href="histoires-de-la-biodiversite.html#cb35-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">value =</span> <span class="kw">sum</span>(count)) <span class="op">%&gt;%</span><span class="st"> </span>ungroup <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-5"><a href="histoires-de-la-biodiversite.html#cb35-5"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">id_cols =</span> <span class="st">&quot;taxa&quot;</span>, <span class="dt">names_from =</span> <span class="st">&quot;site_code&quot;</span>, <span class="dt">values_fill =</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;site_code&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="histoires-de-la-biodiversite.html#cb37-1"></a>pap_list &lt;-<span class="st"> </span><span class="kw">as.list</span>(site_spp[<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="histoires-de-la-biodiversite.html#cb38-1"></a>out &lt;-<span class="st"> </span><span class="kw">iNEXT</span>(pap_list, <span class="dt">q=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">datatype=</span><span class="st">&quot;abundance&quot;</span>, <span class="dt">endpoint=</span><span class="dv">50</span>)</span></code></pre></div>
+<pre><code>## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
 
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.</code></pre>
+<pre><code>## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="histoires-de-la-biodiversite.html#cb41-1"></a><span class="kw">ggiNEXT</span>(out, <span class="dt">type=</span><span class="dv">1</span>, <span class="dt">facet.var=</span><span class="st">&quot;order&quot;</span>, <span class="dt">color.var=</span><span class="st">&quot;site&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: The shape palette can deal with a maximum of 6 discrete values because
+## more than 6 becomes difficult to discriminate; you have 14. Consider
+## specifying shapes manually if you must have them.</code></pre>
+<pre><code>## Warning: Removed 24 rows containing missing values (geom_point).</code></pre>
+<p><img src="indicators-bookdown_files/figure-html/order_plot-1.png" width="672" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="histoires-de-la-biodiversite.html#cb44-1"></a><span class="kw">ggiNEXT</span>(out, <span class="dt">type=</span><span class="dv">1</span>, <span class="dt">facet.var=</span><span class="st">&quot;site&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb44-2"><a href="histoires-de-la-biodiversite.html#cb44-2"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>site) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">20</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="indicators-bookdown_files/figure-html/indiv_raref-1.png" width="672" /></p>
+<p>How many per site?</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="histoires-de-la-biodiversite.html#cb46-1"></a><span class="kw">map_dbl</span>(pap_list, sum)</span></code></pre></div>
+<pre><code>## 132_116_H01 135_104_H01 136_116_H01 137_107_H01 137_107_H02 137_111_H01 
+##           3           3           9           8           7           3 
+## 139_103_H01 139_111_H01 141_108_H01 142_111_H01 142_111_H02 145_102_H01 
+##           7           3           2          18          10          32 
+## 145_102_H02 148_101_H01 
+##           2           7</code></pre>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="dl.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="odonate-communities.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="lepidoptera.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

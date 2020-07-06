@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6 Soil invertebrates | Indicateurs de la Biodiversité</title>
+  <title>7 Soil invertebrates | Indicateurs de la Biodiversité</title>
   <meta name="description" content="Indicators in progress." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6 Soil invertebrates | Indicateurs de la Biodiversité" />
+  <meta property="og:title" content="7 Soil invertebrates | Indicateurs de la Biodiversité" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6 Soil invertebrates | Indicateurs de la Biodiversité" />
+  <meta name="twitter:title" content="7 Soil invertebrates | Indicateurs de la Biodiversité" />
   
   <meta name="twitter:description" content="Indicators in progress." />
   
@@ -24,14 +24,14 @@
 <meta name="author" content="Andrew MacDonald" />
 
 
-<meta name="date" content="2020-06-29" />
+<meta name="date" content="2020-07-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="soil-invertebrates.html"/>
+<link rel="prev" href="lepidoptera.html"/>
 <link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
@@ -149,9 +149,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="soil-invertebrates.html"><a href="soil-invertebrates.html#questions-1"><i class="fa fa-check"></i><b>5.1</b> Questions</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="soil-invertebrates-1.html"><a href="soil-invertebrates-1.html"><i class="fa fa-check"></i><b>6</b> Soil invertebrates</a>
+<li class="chapter" data-level="6" data-path="lepidoptera.html"><a href="lepidoptera.html"><i class="fa fa-check"></i><b>6</b> Lepidoptera</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="soil-invertebrates-1.html"><a href="soil-invertebrates-1.html#questions-2"><i class="fa fa-check"></i><b>6.1</b> Questions</a></li>
+<li class="chapter" data-level="6.1" data-path="lepidoptera.html"><a href="lepidoptera.html#questions-2"><i class="fa fa-check"></i><b>6.1</b> Questions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="soil-invertebrates-1.html"><a href="soil-invertebrates-1.html"><i class="fa fa-check"></i><b>7</b> Soil invertebrates</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="soil-invertebrates-1.html"><a href="soil-invertebrates-1.html#sampling-rarefaction"><i class="fa fa-check"></i><b>7.1</b> Sampling / rarefaction</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -174,56 +178,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="soil-invertebrates-1" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Soil invertebrates</h1>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="soil-invertebrates-1.html#cb26-1"></a><span class="co"># confirm that the only variable recorded here is &quot;abondance&quot;</span></span>
-<span id="cb26-2"><a href="soil-invertebrates-1.html#cb26-2"></a>papillons<span class="op">$</span>var <span class="op">%&gt;%</span><span class="st"> </span>unique <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw">stopifnot</span>(. <span class="op">==</span><span class="st"> &quot;abondance&quot;</span>)}</span>
-<span id="cb26-3"><a href="soil-invertebrates-1.html#cb26-3"></a></span>
-<span id="cb26-4"><a href="soil-invertebrates-1.html#cb26-4"></a></span>
-<span id="cb26-5"><a href="soil-invertebrates-1.html#cb26-5"></a><span class="co">## are sites nested in cells? </span></span>
-<span id="cb26-6"><a href="soil-invertebrates-1.html#cb26-6"></a></span>
-<span id="cb26-7"><a href="soil-invertebrates-1.html#cb26-7"></a>papillons <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb26-8"><a href="soil-invertebrates-1.html#cb26-8"></a><span class="st">  </span><span class="kw">select</span>(site_code, cell_code) <span class="op">%&gt;%</span><span class="st"> </span>distinct <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb26-9"><a href="soil-invertebrates-1.html#cb26-9"></a><span class="st">  </span><span class="kw">group_by</span>(cell_code) <span class="op">%&gt;%</span><span class="st"> </span>tally</span></code></pre></div>
-<pre><code>## # A tibble: 11 x 2
-##    cell_code     n
-##    &lt;chr&gt;     &lt;int&gt;
-##  1 132_116       1
-##  2 135_104       1
-##  3 136_116       1
-##  4 137_107       2
-##  5 137_111       1
-##  6 139_103       1
-##  7 139_111       1
-##  8 141_108       1
-##  9 142_111       2
-## 10 145_102       2
-## 11 148_101       1</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="soil-invertebrates-1.html#cb28-1"></a><span class="co"># yes, cells in sites </span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="soil-invertebrates-1.html#cb29-1"></a>rank_abundance &lt;-<span class="st"> </span>papillons <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb29-2"><a href="soil-invertebrates-1.html#cb29-2"></a><span class="st">  </span><span class="kw">filter</span>(val<span class="op">&gt;</span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb29-3"><a href="soil-invertebrates-1.html#cb29-3"></a><span class="st">  </span><span class="kw">left_join</span>(<span class="kw">select</span>(cells, cell_code, name)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb29-4"><a href="soil-invertebrates-1.html#cb29-4"></a><span class="st">  </span><span class="kw">group_by</span>(cell_code, name, site_code, taxa) <span class="op">%&gt;%</span><span class="st">  </span></span>
-<span id="cb29-5"><a href="soil-invertebrates-1.html#cb29-5"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">total =</span> <span class="kw">sum</span>(count)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb29-6"><a href="soil-invertebrates-1.html#cb29-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank =</span> <span class="kw">row_number</span>(<span class="kw">desc</span>(total)))</span></code></pre></div>
-<pre><code>## Joining, by = &quot;cell_code&quot;</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;cell_code&#39;, &#39;name&#39;, &#39;site_code&#39; (override with `.groups` argument)</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="soil-invertebrates-1.html#cb32-1"></a>rank_abundance <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb32-2"><a href="soil-invertebrates-1.html#cb32-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> total, <span class="dt">group =</span> site_code)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb32-3"><a href="soil-invertebrates-1.html#cb32-3"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb32-4"><a href="soil-invertebrates-1.html#cb32-4"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb32-5"><a href="soil-invertebrates-1.html#cb32-5"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb32-6"><a href="soil-invertebrates-1.html#cb32-6"></a><span class="st">  </span><span class="kw">coord_trans</span>(<span class="dt">y =</span> <span class="st">&quot;log&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb32-7"><a href="soil-invertebrates-1.html#cb32-7"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span></code></pre></div>
-<pre><code>## geom_path: Each group consists of only one observation. Do you need to adjust
-## the group aesthetic?
-## geom_path: Each group consists of only one observation. Do you need to adjust
-## the group aesthetic?</code></pre>
-<p><img src="indicators-bookdown_files/figure-html/fig_rank_abd_pap-1.png" width="672" /></p>
-<div id="questions-2" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Questions</h2>
-<p>Why are some site names NA? do those sites not have names?</p>
-<p>Should 0 values be uploaded into Coleo?</p>
+<div id="soil-invertebrates-1" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Soil invertebrates</h1>
+<ol style="list-style-type: decimal">
+<li>Changement de phénologie dans le temps</li>
+<li>Quelle partie de la biodiversité on connaît (sampling/rarefaction)</li>
+<li>Changements de richesse au cours du temps</li>
+<li>Emplacement des communautés les plus originales / uniques</li>
+<li>Hotspots de biodiversité par taxa</li>
+<li>Portrait de différents biomes avec des espèces emblématiques</li>
+<li>Réseaux?</li>
+<li>Distribution de l’âge phylogénétique des espèces</li>
+<li>Distribution de l’année de première observation des espèces</li>
+<li>Potentiel de human-wildlife conflict</li>
+</ol>
+<div id="sampling-rarefaction" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Sampling / rarefaction</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="soil-invertebrates-1.html#cb34-1"></a><span class="kw">library</span>(iNEXT)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="soil-invertebrates-1.html#cb35-1"></a>site_spp &lt;-<span class="st"> </span>papillons <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-2"><a href="soil-invertebrates-1.html#cb35-2"></a><span class="st">  </span><span class="kw">select</span>(site_code, taxa, count) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-3"><a href="soil-invertebrates-1.html#cb35-3"></a><span class="st">  </span><span class="kw">group_by</span>(site_code, taxa) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-4"><a href="soil-invertebrates-1.html#cb35-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">value =</span> <span class="kw">sum</span>(count)) <span class="op">%&gt;%</span><span class="st"> </span>ungroup <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-5"><a href="soil-invertebrates-1.html#cb35-5"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">id_cols =</span> <span class="st">&quot;taxa&quot;</span>, <span class="dt">names_from =</span> <span class="st">&quot;site_code&quot;</span>, <span class="dt">values_fill =</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;site_code&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="soil-invertebrates-1.html#cb37-1"></a>pap_list &lt;-<span class="st"> </span><span class="kw">as.list</span>(site_spp[<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="soil-invertebrates-1.html#cb38-1"></a>out &lt;-<span class="st"> </span><span class="kw">iNEXT</span>(pap_list, <span class="dt">q=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">datatype=</span><span class="st">&quot;abundance&quot;</span>, <span class="dt">endpoint=</span><span class="dv">50</span>)</span></code></pre></div>
+<pre><code>## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.
+
+## Warning in EstiBootComm.Ind(Spec): This site has only one species. Estimation is
+## not robust.</code></pre>
+<pre><code>## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.
+
+## Warning in BootstrapFun.abun(x = x, FunName, datatype, B): The Bootstrap
+## community has only one species. Estimation is not robust.</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="soil-invertebrates-1.html#cb41-1"></a><span class="kw">ggiNEXT</span>(out, <span class="dt">type=</span><span class="dv">1</span>, <span class="dt">facet.var=</span><span class="st">&quot;order&quot;</span>, <span class="dt">color.var=</span><span class="st">&quot;site&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: The shape palette can deal with a maximum of 6 discrete values because
+## more than 6 becomes difficult to discriminate; you have 14. Consider
+## specifying shapes manually if you must have them.</code></pre>
+<pre><code>## Warning: Removed 24 rows containing missing values (geom_point).</code></pre>
+<p><img src="indicators-bookdown_files/figure-html/order_plot-1.png" width="672" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="soil-invertebrates-1.html#cb44-1"></a><span class="kw">ggiNEXT</span>(out, <span class="dt">type=</span><span class="dv">1</span>, <span class="dt">facet.var=</span><span class="st">&quot;site&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb44-2"><a href="soil-invertebrates-1.html#cb44-2"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>site) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">20</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="indicators-bookdown_files/figure-html/indiv_raref-1.png" width="672" /></p>
+<p>How many per site?</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="soil-invertebrates-1.html#cb46-1"></a><span class="kw">map_dbl</span>(pap_list, sum)</span></code></pre></div>
+<pre><code>## 132_116_H01 135_104_H01 136_116_H01 137_107_H01 137_107_H02 137_111_H01 
+##           3           3           9           8           7           3 
+## 139_103_H01 139_111_H01 141_108_H01 142_111_H01 142_111_H02 145_102_H01 
+##           7           3           2          18          10          32 
+## 145_102_H02 148_101_H01 
+##           2           7</code></pre>
 
 </div>
 </div>
@@ -232,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="soil-invertebrates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="lepidoptera.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
